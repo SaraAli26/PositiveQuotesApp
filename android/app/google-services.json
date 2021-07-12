@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "612623279646",
+    "project_id": "positive-quotes-app",
+    "storage_bucket": "positive-quotes-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612623279646:android:b9beea2c273bbdc33eb00f",
+        "android_client_info": {
+          "package_name": "com.example.qoutesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "612623279646-km49ub7venn0icbg7s07s8mv98teo2nj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ2RJWKOZJ8F8YQBly4cfjcxzc6XBVUMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "612623279646-km49ub7venn0icbg7s07s8mv98teo2nj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
