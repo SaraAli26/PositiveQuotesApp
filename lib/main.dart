@@ -2,15 +2,21 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:qoutesapp/Pages/FavoritesPage.dart';
 import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Pages/ProfilePage.dart';
+import 'package:qoutesapp/Pages/AuthPage.dart';
+import 'package:qoutesapp/Services/LocalStorageService.dart';
 import 'package:qoutesapp/Services/QuotesService.dart';
+import 'package:qoutesapp/Services/AuthService.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
@@ -18,18 +24,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    QuotesService quoser = new QuotesService();
-
     Firebase.initializeApp();
-    quoser.getQuotesCollectionFromFireStore();
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
+    //QuotesService quoser = new QuotesService();
+    //quoser.getQuotesCollectionFromFireStore();
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AuthService(),
+        ),
+      ],
+      child: Consumer<AuthService>(builder: (ctx, auth, _) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.teal,
+        ),
+        //home: MyHomePage(title: 'Good morning Sara!',),
+        home: LocalStorageService().getUserId.toString() == "NoUserLoggedIn" ? AuthScreen() : MyHomePage(title: '',),
       ),
-      home: MyHomePage(title: 'Good morning Sara!',),
+      ),
     );
   }
 }

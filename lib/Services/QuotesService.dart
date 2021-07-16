@@ -66,7 +66,6 @@ class QuotesService {
       print(quotesData);
       QuoteOfToday = QuoteModel.fromJson(quotesData);
       print(QuoteOfToday.quote);
-
     }
     return QuoteOfToday;
   }
