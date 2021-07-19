@@ -14,6 +14,8 @@ import 'package:qoutesapp/Services/LocalStorageService.dart';
 import 'package:qoutesapp/Services/QuotesService.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
+import 'Pages/SplashPage.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,18 +33,30 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthService(),
+        ChangeNotifierProvider(
+          create: (context) => AuthService(),
         ),
       ],
-      child: Consumer<AuthService>(builder: (ctx, auth, _) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
+      child: Consumer<AuthService>(
+        builder: (ctx, auth, _) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.teal,
+          ),
+          //home: MyHomePage(title: 'Good morning Sara!',),
+          home: auth.isAuth
+              ? MyHomePage(
+                  title: '',
+                )
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (ctx, authResultSnapshot) =>
+                      authResultSnapshot.connectionState == ConnectionState.waiting
+                      ? SplashPage() :
+                      AuthScreen(),
+                ),
         ),
-        //home: MyHomePage(title: 'Good morning Sara!',),
-        home: LocalStorageService().getUserId.toString() == "NoUserLoggedIn" ? AuthScreen() : MyHomePage(title: '',),
-      ),
       ),
     );
   }
@@ -59,16 +73,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var currentTime = DateTime.now();
-  int _currentIndex = 0 ;
-  List<Widget> _pages = <Widget>[
-    ProfilePage(),
-    HomePage(),
-    FavoritesPage()
-  ];
+  int _currentIndex = 0;
+
+  List<Widget> _pages = <Widget>[ProfilePage(), HomePage(), FavoritesPage()];
 
   @override
   Widget build(BuildContext context) {
-
     //To Set the status bar color
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.white12,
@@ -77,26 +87,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text( currentTime.hour < 12 ? widget.title : "Good Evening Sara",
-          style: TextStyle(color: Colors.teal),),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-          brightness: Brightness.light
-      ),
+          title: Text(
+            currentTime.hour < 12 ? widget.title : "Good Evening Sara",
+            style: TextStyle(color: Colors.teal),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          brightness: Brightness.light),
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
-      body: _pages.elementAt(_currentIndex),// Thi
+      body: _pages.elementAt(_currentIndex),
+      // Thi
       bottomNavigationBar: ConvexAppBar(
         items: [
-          TabItem(icon:Icon(Icons.person, color: Colors.white,), title: 'Profile'),
-          TabItem(icon:Icon(Icons.home_filled, color: Colors.white), title: 'Home'),
-          TabItem(icon:Icon(Icons.favorite, color: Colors.white), title: 'Favorites'),
+          TabItem(
+              icon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              title: 'Profile'),
+          TabItem(
+              icon: Icon(Icons.home_filled, color: Colors.white),
+              title: 'Home'),
+          TabItem(
+              icon: Icon(Icons.favorite, color: Colors.white),
+              title: 'Favorites'),
         ],
         initialActiveIndex: _currentIndex,
         backgroundColor: Colors.teal,
         activeColor: Colors.teal,
         onTap: _changePage,
-      ),// s trailing comma makes auto-formatting nicer for build methods.
+      ), // s trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
