@@ -59,7 +59,6 @@ class AuthService with ChangeNotifier {
     var id = prefs.getString("userId");
     var token = prefs.getString("tokenId");
     var expiryDate = prefs.getString("expiryDate");
-    print("heeeeeeeeeeeere" + id.toString() + token.toString() + expiryDate.toString());
     if(!prefs.containsKey('userId')){
       return false;
     }
@@ -161,8 +160,17 @@ class AuthService with ChangeNotifier {
           'date': date,
           'time': time,
         })
-          .then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+          .then((value) => print("Fav Quote Added Successfully" + value.id)).catchError((error) => print("Failed to add to Fav: $error"));
 
+  }
+
+  Future<void> deleteFavoriteQuote(String quote) async {
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return users.doc(id!).collection('favQuote').where("quote", isEqualTo: quote).get().then((snapshot){
+      snapshot.docs.first.reference.delete();
+    });
   }
 
   Future<List<QuoteModel>> getUserFavQuotes() async {

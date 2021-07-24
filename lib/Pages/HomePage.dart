@@ -102,9 +102,9 @@ class _HomePageState extends State<HomePage> {
                         TextButton(
                           onPressed: () {
                             final snackBar = SnackBar(
-                              content: Text('Quote Added Successfully to your Favorites!'),
+                              content: Text('Fav Quote Added!'),
                               action: SnackBarAction(
-                                label: 'Undo',
+                                label: '',
                                 onPressed: () {
                                   // Some code to undo the change.
                                 },
