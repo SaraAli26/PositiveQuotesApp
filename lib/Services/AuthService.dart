@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:qoutesapp/Models/QuoteModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +15,7 @@ class AuthService with ChangeNotifier {
   String? _userId = "" ;
   String? _token = "";
   Timer? _authTimer;
+  List<QuoteModel> _Quotess = [];
 
   bool get isAuth {
     return token != null;
@@ -28,6 +31,18 @@ class AuthService with ChangeNotifier {
     return null;
   }
 
+  String? get userId {
+    if (_expiryDate != null &&
+        _expiryDate!.isAfter(DateTime.now()) &&
+        _userId != null) {
+      return _userId;
+    }
+    return null;
+  }
+
+  List<QuoteModel> get myFavQuotes{
+    return _Quotess;
+  }
 
 
   Future<bool> setUser(String userId, String tokenId, DateTime expiryDate) async {
@@ -91,6 +106,7 @@ class AuthService with ChangeNotifier {
             ),
           );
 
+
         _autoLogout();
       notifyListeners();
       setUser(_userId!, _token!, _expiryDate!);
@@ -132,4 +148,38 @@ class AuthService with ChangeNotifier {
     //Call function that dosent receive any arguments and dosent return anything
     _authTimer = Timer(Duration(seconds: timeToExpiry), logout);
   }
+
+
+  Future<void> addFavoriteQuote(String author, String quote, String category, String date, String time) async{
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+      CollectionReference users = FirebaseFirestore.instance.collection('users');
+        return users.doc(id!).collection('favQuote').add({
+          'author': author,
+          'quote': quote,
+          'category': category,
+          'date': date,
+          'time': time,
+        })
+          .then((value) => print("User Added")).catchError((error) => print("Failed to add user: $error"));
+
+  }
+
+  Future<List<QuoteModel>> getUserFavQuotes() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+
+    FirebaseFirestore _instance = FirebaseFirestore.instance;
+    DocumentReference userDocument = _instance.collection('users').doc(id);
+    var userFavQuotes =  await userDocument.collection('favQuote').get();
+
+    userFavQuotes.docs.forEach((quotesd) {
+        QuoteModel cat = QuoteModel.fromJson(quotesd.data());
+        _Quotess.add(cat);
+      });
+     return _Quotess;
+  }
+
+
 }

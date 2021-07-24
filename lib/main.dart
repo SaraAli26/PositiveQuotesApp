@@ -23,6 +23,7 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
+  var currentTime = DateTime.now();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
           //home: MyHomePage(title: 'Good morning Sara!',),
           home: auth.isAuth
               ? MyHomePage(
-                  title: '',
+                  title:  currentTime.hour < 12 ? "Good Morning Sara!" : "Good Evening Sara!",
                 )
               : FutureBuilder(
                   future: auth.tryAutoLogin(),

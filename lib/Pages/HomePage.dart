@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
+import 'package:qoutesapp/Services/AuthService.dart';
 import 'package:qoutesapp/Services/QuotesService.dart';
 
 class HomePage extends StatefulWidget {
@@ -99,7 +100,20 @@ class _HomePageState extends State<HomePage> {
                       alignment: MainAxisAlignment.end,
                       children: <Widget>[
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            final snackBar = SnackBar(
+                              content: Text('Quote Added Successfully to your Favorites!'),
+                              action: SnackBarAction(
+                                label: 'Undo',
+                                onPressed: () {
+                                  // Some code to undo the change.
+                                },
+                              ),
+                            );
+                            AuthService().addFavoriteQuote(u.author, u.quote, u.category,u.date,u.time);
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          },
                           child: Icon(Icons.favorite),
                         ),
                         TextButton(
