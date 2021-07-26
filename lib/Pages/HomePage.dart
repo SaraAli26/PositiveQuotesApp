@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 import 'package:qoutesapp/Services/QuotesService.dart';
+import 'package:share/share.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -117,7 +118,10 @@ class _HomePageState extends State<HomePage> {
                           child: Icon(Icons.favorite),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: ()
+                            {
+                              Share.share(u.quote + '\n ~'+ u.author + '\n \n Get daily motivation Quotes From Share Quotes app at https://example.com');
+                          },
                           child: Icon(Icons.share),
                         ),
                       ],

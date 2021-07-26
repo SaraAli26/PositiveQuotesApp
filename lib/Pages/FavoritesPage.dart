@@ -1,6 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+
 import 'package:qoutesapp/Models/QuoteModel.dart';
 import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
