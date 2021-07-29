@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
           //home: MyHomePage(title: 'Good morning Sara!',),
           home: auth.isAuth
               ? MyHomePage(
-                  title:  currentTime.hour < 12 ? "Good Morning Sara!" : "Good Evening Sara!",
+                  title:  currentTime.hour < 12 ? "Good Morning!" : "Good Evening!",
                 )
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
@@ -74,7 +74,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   var currentTime = DateTime.now();
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   List<Widget> _pages = <Widget>[ProfilePage(), HomePage(), FavoritesPage()];
 
@@ -89,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-            currentTime.hour < 12 ? widget.title : "Good Evening Sara",
+            currentTime.hour < 12 ? widget.title : "Good Evening!",
             style: TextStyle(color: Colors.teal),
           ),
           backgroundColor: Colors.transparent,
