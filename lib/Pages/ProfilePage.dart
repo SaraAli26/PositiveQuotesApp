@@ -14,6 +14,9 @@ class _ProfilePageState extends State<ProfilePage> {
   String firstName = "";
   String lastName = "";
   bool isLoading = false;
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+
 
   void initState() {
     super.initState();
@@ -34,6 +37,9 @@ class _ProfilePageState extends State<ProfilePage> {
       UserModel c = await getFullName();
       firstName = c.firstName;
       lastName = c.lastName;
+      firstNameController = TextEditingController(text: firstName);
+      lastNameController = TextEditingController(text: lastName);
+
       if (mounted) {
         setState(() {
           isLoading = false;
@@ -52,22 +58,84 @@ class _ProfilePageState extends State<ProfilePage> {
     return Center(
        child: isLoading ?
        CircularProgressIndicator()
-           : Column(
+           : Container(
+         width: 300,
+         //height: 350.0,
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisAlignment: MainAxisAlignment.center,
          children: [
-           Text(firstName),
-           Text(lastName),
-           TextButton(
-             style: ButtonStyle(
-               backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
-               foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+             ClipOval(
+             child: Material(
+             color: Colors.transparent,
+               child: Ink.image(
+                 image:  AssetImage('assets/Images/mandala.png'),
+                 fit: BoxFit.cover,
+                 width: 128,
+                 height: 128,
+                 child: InkWell(onTap: (){}),
+               ),
              ),
-             onPressed: () {
-               Provider.of<AuthService>(context, listen: false).logout();
-             },
-             child: Text('Logout'),
+              ),
+             SizedBox(height: 60.0,),
+             Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'First Name',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            TextField(
+              controller: firstNameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              maxLines: 1,
+            ),
+          ],
+        ),
+           SizedBox(height: 20.0,),
+           Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Text(
+                 'Last Name',
+                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+               ),
+               const SizedBox(height: 8),
+               TextField(
+                 controller: lastNameController,
+                 decoration: InputDecoration(
+                   border: OutlineInputBorder(
+                     borderRadius: BorderRadius.circular(12),
+                   ),
+                 ),
+                 maxLines: 1,
+               ),
+             ],
+           ),
+           SizedBox(height: 100.0,),
+           Row(
+             mainAxisAlignment: MainAxisAlignment.end,
+             children: [
+               TextButton(
+                 style: ButtonStyle(
+                   backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                 ),
+                 onPressed: () {
+                   Provider.of<AuthService>(context, listen: false).logout();
+                 },
+                 child: Text('Logout'),
+               )
+             ],
            )
          ],
        ),
+           ),
     );
   }
 

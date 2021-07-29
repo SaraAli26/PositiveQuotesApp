@@ -58,23 +58,25 @@ class _FavoritesPageState extends State<FavoritesPage> {
             padding: const EdgeInsets.all(8),
             itemCount: myFavQuotes.length,
             itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                title: Text(myFavQuotes[index].quote) ,
-                subtitle: Text(myFavQuotes[index].author),
-                trailing: IconButton(icon: Icon(Icons.delete),   onPressed: (){
-                  delFavQuotes(myFavQuotes[index].quote);
-                  final snackBar = SnackBar(
-                    content: Text('Favorite Quote Deleted!'),
-                    action: SnackBarAction(
-                      label: '',
-                      onPressed: () {
-                        // Some code to undo the change.
-                      },
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  var timer = Timer(Duration(seconds: 3), () =>  load());
-                },
+              return Card(
+                child: ListTile(
+                  title: Text(myFavQuotes[index].quote) ,
+                  subtitle: Text("~ " + myFavQuotes[index].author),
+                  trailing: IconButton(icon: Icon(Icons.delete),   onPressed: (){
+                    delFavQuotes(myFavQuotes[index].quote);
+                    final snackBar = SnackBar(
+                      content: Text('Favorite Quote Deleted!'),
+                      action: SnackBarAction(
+                        label: '',
+                        onPressed: () {
+                          // Some code to undo the change.
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    var timer = Timer(Duration(seconds: 3), () =>  load());
+                  },
+                  ),
                 ),
               );
             }
