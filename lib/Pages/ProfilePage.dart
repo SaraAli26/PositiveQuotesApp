@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
              onPressed: () {
                Provider.of<AuthService>(context, listen: false).logout();
              },
-             child: Text('Log out'),
+             child: Text('Logout'),
            )
          ],
        ),
