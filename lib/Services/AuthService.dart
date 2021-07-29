@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
+import 'package:qoutesapp/Models/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -79,7 +80,7 @@ class AuthService with ChangeNotifier {
   }
 
   Future<void> _authenticate(
-      String email, String password, String urlSegment) async {
+      String email, String password, String urlSegment, String firstName, String lastName) async {
     final url =
         "https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=AIzaSyDQ2RJWKOZJ8F8YQBly4cfjcxzc6XBVUMw";
     try {
@@ -105,6 +106,9 @@ class AuthService with ChangeNotifier {
             ),
           );
 
+        if(urlSegment == "signUp"){
+          addAdditionalDataWhenSignUp(_userId, firstName, lastName);
+        }
 
         _autoLogout();
       notifyListeners();
@@ -114,12 +118,22 @@ class AuthService with ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String email, String password) async {
-    return _authenticate(email, password, 'signUp');
+  Future<void> addAdditionalDataWhenSignUp(userId, firstName, lastName) async {
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return users.doc(userId!).set({
+      'firstname': firstName,
+      'lastname': lastName,
+    })
+        .then((value) => print("Data Added Successfully")).catchError((error) => print("Failed to add data: $error"));
+  }
+
+  Future<void> signUp(String email, String password, String firstName, String lastName) async {
+    return _authenticate(email, password, 'signUp', firstName, lastName);
   }
 
   Future<void> login(String email, String password) async {
-    return _authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, 'signInWithPassword', "","");
   }
 
   Future<void> logout() async {
@@ -189,5 +203,25 @@ class AuthService with ChangeNotifier {
      return _Quotess;
   }
 
+  Future<UserModel> getUserData() async {
+    UserModel user = new UserModel(firstName: "", lastName: "");
+
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+
+   FirebaseFirestore _instance = FirebaseFirestore.instance;
+    CollectionReference quotes = _instance!.collection("users");
+
+    DocumentSnapshot snapshot = await quotes.doc(id).get();
+    if(snapshot.exists){
+      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+     // var quotesData =  data['DailyQuotes'] as Map<String, dynamic>;
+      //print(quotesData);
+      user = UserModel.fromJson(data);
+      //print(QuoteOfToday.quote);
+    }
+
+    return user;
+  }
 
 }

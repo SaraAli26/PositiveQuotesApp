@@ -119,6 +119,8 @@ class _AuthCardState extends State<AuthCard> {
         await Provider.of<AuthService>(context, listen: false).signUp(
           _authData['email'] as String,
           _authData['password'] as String,
+          _authData['firstname'] as String,
+          _authData['lastname'] as String,
         );
       }
     } on HttpException catch (error) {
@@ -136,7 +138,6 @@ class _AuthCardState extends State<AuthCard> {
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      print("iaaaaaaaaaaaaaaaaaaa" + error.toString());
       const errorMessage = "Couldn't Authenticate you, please try again!";
       _showErrorDialog(errorMessage);
 
@@ -177,6 +178,36 @@ class _AuthCardState extends State<AuthCard> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                if (_authMode == AuthMode.Signup)
+                  TextFormField(
+                    enabled: _authMode == AuthMode.Signup,
+                    decoration: InputDecoration(labelText: 'First Name'),
+                    validator: _authMode == AuthMode.Signup
+                        ? (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Add First Name!';
+                      }
+                    }
+                        : null,
+                    onSaved: (value) {
+                      _authData['firstname'] = value!;
+                    },
+                  ),
+                if (_authMode == AuthMode.Signup)
+                  TextFormField(
+                    enabled: _authMode == AuthMode.Signup,
+                    decoration: InputDecoration(labelText: 'Last Name'),
+                    validator: _authMode == AuthMode.Signup
+                        ? (value) {
+                      if (value!.isEmpty) {
+                        return 'Please Add Last Name!';
+                      }
+                    }
+                        : null,
+                    onSaved: (value) {
+                      _authData['lastname'] = value!;
+                    },
+                  ),
                 TextFormField(
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
