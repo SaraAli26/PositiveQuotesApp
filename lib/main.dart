@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthService>(
         builder: (ctx, auth, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Flutter Demo',
+          title: 'Postitive Quotes App',
           theme: ThemeData(
             primarySwatch: Colors.teal,
           ),
