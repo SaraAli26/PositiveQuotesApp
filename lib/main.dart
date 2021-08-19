@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-import 'package:qoutesapp/Models/QuoteModel.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:qoutesapp/Pages/FavoritesPage.dart';
 import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Pages/ProfilePage.dart';
 import 'package:qoutesapp/Pages/AuthPage.dart';
-import 'package:qoutesapp/Services/LocalStorageService.dart';
-import 'package:qoutesapp/Services/QuotesService.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
 import 'Pages/SplashPage.dart';
