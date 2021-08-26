@@ -128,6 +128,18 @@ class AuthService with ChangeNotifier {
         .then((value) => print("Data Added Successfully")).catchError((error) => print("Failed to add data: $error"));
   }
 
+  Future<void> updateProfile(firstName, lastName) async {
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return users.doc(id!).set({
+      'firstname': firstName,
+      'lastname': lastName,
+    })
+        .then((value) => print("Data Updated Successfully")).catchError((error) => print("Failed to add data: $error"));
+  }
+
   Future<void> signUp(String email, String password, String firstName, String lastName) async {
     return _authenticate(email, password, 'signUp', firstName, lastName);
   }

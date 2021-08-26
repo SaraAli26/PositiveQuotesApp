@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,82 +61,107 @@ class _ProfilePageState extends State<ProfilePage> {
        child: isLoading ?
        CircularProgressIndicator()
            : Container(
-         width: 300,
-         //height: 350.0,
-             child: Column(
-               crossAxisAlignment: CrossAxisAlignment.center,
-               mainAxisAlignment: MainAxisAlignment.center,
+            width: 300,
+             child: SingleChildScrollView(
+               child: Column(
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 mainAxisAlignment: MainAxisAlignment.center,
          children: [
-             ClipOval(
-             child: Material(
-             color: Colors.transparent,
-               child: Ink.image(
-                 image:  AssetImage('assets/Images/mandala.png'),
-                 fit: BoxFit.cover,
-                 width: 128,
-                 height: 128,
-                 child: InkWell(onTap: (){}),
+               ClipOval(
+               child: Material(
+               color: Colors.transparent,
+                 child: Ink.image(
+                   image:  AssetImage('assets/Images/mandala.png'),
+                   fit: BoxFit.cover,
+                   width: 128,
+                   height: 128,
+                   child: InkWell(onTap: (){}),
+                 ),
                ),
-             ),
-              ),
-             SizedBox(height: 60.0,),
-             Column(
+                ),
+               SizedBox(height: 60.0,),
+               Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'First Name',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                'First Name',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
             TextField(
-              controller: firstNameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                controller: firstNameController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-              ),
-              maxLines: 1,
+                maxLines: 1,
             ),
           ],
         ),
            SizedBox(height: 20.0,),
            Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: [
-               Text(
-                 'Last Name',
-                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-               ),
-               const SizedBox(height: 8),
-               TextField(
-                 controller: lastNameController,
-                 decoration: InputDecoration(
-                   border: OutlineInputBorder(
-                     borderRadius: BorderRadius.circular(12),
-                   ),
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Text(
+                   'Last Name',
+                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                  ),
-                 maxLines: 1,
-               ),
-             ],
+                 const SizedBox(height: 8),
+                 TextField(
+                   controller: lastNameController,
+                   decoration: InputDecoration(
+                     border: OutlineInputBorder(
+                       borderRadius: BorderRadius.circular(12),
+                     ),
+                   ),
+                   maxLines: 1,
+                 ),
+               ],
            ),
            SizedBox(height: 100.0,),
            Row(
-             mainAxisAlignment: MainAxisAlignment.end,
-             children: [
-               TextButton(
-                 style: ButtonStyle(
-                   backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
-                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                 ),
-                 onPressed: () {
-                   Provider.of<AuthService>(context, listen: false).logout();
-                 },
-                 child: Text('Logout'),
-               )
-             ],
+               mainAxisAlignment: MainAxisAlignment.end,
+               children: [
+                /* TextButton(
+                   style: ButtonStyle(
+                     backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                   ),
+                   onPressed: () {
+                     Provider.of<AuthService>(context, listen: false).logout();
+                   },
+                   child: Text('Logout'),
+                 ),*/
+                 TextButton(
+                   style: ButtonStyle(
+                     backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                   ),
+                   onPressed: () async {
+                     await Provider.of<AuthService>(context, listen: false).updateProfile(
+                       firstNameController.text,
+                       lastNameController.text
+                     );
+                     final snackBar = SnackBar(
+                       content: Text('                     Profile updated!'),
+                       action: SnackBarAction(
+                         label: '',
+                         onPressed: () {
+                           // Some code to undo the change.
+                         },
+                       ),
+                     );
+                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                     var timer = Timer(Duration(seconds: 3), () =>  load());
+                   },
+                   child: Text('Update Profile'),
+                 )
+               ],
            )
          ],
        ),
+             ),
            ),
     );
   }

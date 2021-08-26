@@ -10,6 +10,7 @@ import 'package:qoutesapp/Pages/ProfilePage.dart';
 import 'package:qoutesapp/Pages/AuthPage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
+import 'Pages/AboutPage.dart';
 import 'Pages/SplashPage.dart';
 
 Future<void> main() async {
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AuthService>(
         builder: (ctx, auth, _) => MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Postitive Quotes App',
+          title: 'Positive Quotes App',
           theme: ThemeData(
             primarySwatch: Colors.teal,
           ),
@@ -83,7 +84,28 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
 
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: const Text('About Hope'),
+              trailing: Icon(Icons.help_outline),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AboutPage())),
+            ),
+            ListTile(
+              title: const Text('Logout'),
+              trailing: Icon(Icons.logout),
+              onTap: () {
+                Provider.of<AuthService>(context, listen: false).logout();
+                Navigator.pop(context);
+              },
+            )
+          ],
+        ),
+      ),
       appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.teal),
           title: Text(
             currentTime.hour < 12 ? widget.title : "Good Evening!",
             style: TextStyle(color: Colors.teal),
