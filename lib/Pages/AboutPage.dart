@@ -32,7 +32,11 @@ class _AboutPageState extends State<AboutPage> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
-          child: Text("About Page!"),
+          padding: EdgeInsets.fromLTRB(80, 0, 80, 0),
+
+          child: Text("About Hope! \n \n Hope Application Provides you with a daily motivation quotes \n that you can view, save and share. \n Also you will be "
+              "notified daily to view quotes \n \n \n ©. All Rights reserved Hope " + DateTime.now().year.toString(), textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 18),),
         ),
       )
     );

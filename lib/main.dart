@@ -93,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
+            SizedBox(height: 20,),
             ListTile(
               title: const Text('About Hope'),
               trailing: Icon(Icons.help_outline),
