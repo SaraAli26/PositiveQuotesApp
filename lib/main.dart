@@ -12,6 +12,7 @@ import 'package:qoutesapp/Pages/AuthPage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
 import 'Pages/AboutPage.dart';
+import 'Pages/IntroSliderPage.dart';
 import 'Pages/SplashPage.dart';
 
 Future<void> main() async {
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
                   builder: (ctx, authResultSnapshot) =>
                       authResultSnapshot.connectionState == ConnectionState.waiting
                       ? SplashPage() :
-                      AuthScreen(),
+                      //AuthScreen(),
+                        IntroSliderPage(),
                 ),
         ),
       ),

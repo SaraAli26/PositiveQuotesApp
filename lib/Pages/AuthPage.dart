@@ -60,6 +60,7 @@ class AuthScreen extends StatelessWidget {
         ],
       ),
     );
+
   }
 }
 
@@ -114,6 +115,7 @@ class _AuthCardState extends State<AuthCard> {
           _authData['email'] as String,
           _authData['password'] as String,
         );
+        Navigator.pop(context);
       } else {
         // Sign user up
         await Provider.of<AuthService>(context, listen: false).signUp(
@@ -122,6 +124,7 @@ class _AuthCardState extends State<AuthCard> {
           _authData['firstname'] as String,
           _authData['lastname'] as String,
         );
+        Navigator.pop(context);
       }
     } on HttpException catch (error) {
       var errorMessage = "Authentication failed!";
