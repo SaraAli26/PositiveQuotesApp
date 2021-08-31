@@ -10,7 +10,7 @@ class QuotesService {
     return _Quotes;
   }
 
-  Future<void> getQuotesCollectionFromFireStore() async {
+   Future<void> getQuotesCollectionFromFireStore() async {
     //This will create direct connection to firebase instance in the cloud
     _instance = FirebaseFirestore.instance;
     CollectionReference quotes = _instance!.collection("positivequotes");
@@ -29,7 +29,7 @@ class QuotesService {
 
   }
 
-  Future<List<QuoteModel>?> getMyQuotes() async {
+   Future<List<QuoteModel>?> getMyQuotes() async {
     List<QuoteModel> _Quotess = [];
 
     _instance = FirebaseFirestore.instance;
@@ -40,9 +40,6 @@ class QuotesService {
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       var quotesData =  data['quotes'] as List<dynamic>;
 
-    /*  var r =  quotesData.where((snapshot) => snapshot == "7/7/2021").first as Map<String, dynamic>;
-      QuoteModel ff = QuoteModel.fromJson(r) ;
-      print("I am rrrrrrrrrrrrrrrrrr" + ff.quote.toString());*/
       print(quotesData);
       quotesData.forEach((quotesd) {
         QuoteModel cat = QuoteModel.fromJson(quotesd as Map<String, dynamic>);

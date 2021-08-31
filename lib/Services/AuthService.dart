@@ -175,18 +175,53 @@ class AuthService with ChangeNotifier {
   }
 
 
-  Future<void> addFavoriteQuote(String author, String quote, String category, String date, String time) async{
+  Future<bool> addFavoriteQuote(String author, String quote, String category, String date, String time) async{
+    bool favored = true;
     final prefs = await SharedPreferences.getInstance();
     var id = prefs.getString("userId");
       CollectionReference users = FirebaseFirestore.instance.collection('users');
-        return users.doc(id!).collection('favQuote').add({
+    await users.doc(id!).collection('favQuote').where("quote", isEqualTo: quote).snapshots().first.then((value) =>{
+      if(value.docs.length == 0)
+        favored = false
+      else
+        favored = true
+    });
+
+      if(favored == false){
+         users.doc(id!).collection('favQuote').add({
           'author': author,
           'quote': quote,
           'category': category,
           'date': date,
           'time': time,
         })
-          .then((value) => print("Fav Quote Added Successfully" + value.id)).catchError((error) => print("Failed to add to Fav: $error"));
+            .then((value) => print("Fav Quote Added Successfully" + value.id)).catchError((error) => print("Failed to add to Fav: $error"));
+        return true;
+      }
+      else{
+        return false;
+      }
+
+  }
+
+  Future<bool> isFavoriteQuote(String quote) async{
+    bool favored = true;
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    await users.doc(id!).collection('favQuote').where("quote", isEqualTo: quote).snapshots().first.then((value) =>{
+      if(value.docs.length == 0)
+        favored = false
+      else
+        favored = true
+    });
+
+    if(favored == false){
+      return false;
+    }
+    else{
+      return true;
+    }
 
   }
 

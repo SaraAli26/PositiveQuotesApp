@@ -1,5 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
@@ -13,13 +11,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<QuoteModel> y = [];
-  QuoteModel u = new QuoteModel(
+  //List<QuoteModel> y = [];
+  QuoteModel todayQuote = new QuoteModel(
       author: "author",
       quote: "Loading...",
       time: "time",
       category: "category",
       date: "date");
+  String favMessage = "Quote Added to Favorite!";
+
+  Icon favIcon = Icon(Icons.favorite_border);
 
   void initState() {
     super.initState();
@@ -34,25 +35,45 @@ class _HomePageState extends State<HomePage> {
     return await QuotesService().getQuoteOfToday();
   }
 
+  isFavorite(quote) async {
+    return await AuthService().isFavoriteQuote(quote);
+  }
+
+  Future<void> _favUnfav() async {
+    bool favorite = await isFavorite(todayQuote.quote);
+    if (favorite == true) {
+    } else {
+      setState(() {
+        favMessage = "Quote Already in Favorites!";
+        favIcon = Icon(Icons.favorite);
+      });
+    }
+  }
+
   load() async {
     try {
       setState(() {
         //isLoading = true;
       });
-      //currentPage = 1;
-      y = await getQuotes();
-      u = await getQuoteOfToday();
-      print("I am the quooote" + u.quote);
+      //y = await getQuotes();
+      todayQuote = await getQuoteOfToday();
+      bool favorite = await isFavorite(todayQuote.quote);
+      if (favorite == true) {
+        // fav = true;
+        favIcon = Icon(Icons.favorite);
+        setState(() {
+          favMessage = "Quote Already in Favorites!";
+        });
+      } else {
+        favIcon = Icon(Icons.favorite_border);
+      }
     } catch (e) {
       print(e);
     }
     setState(() {
       //  isLoading = false;
     });
-    //_refreshController.refreshCompleted();
   }
-
-  //List<QuoteModel> y = QuotesService().getMyQuotes() as List<QuoteModel>;
 
   @override
   Widget build(BuildContext context) {
@@ -88,21 +109,25 @@ class _HomePageState extends State<HomePage> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
-                                child: Text('Quote Of The Day',
+                                child: Text(
+                                  'Quote Of The Day',
                                   style: const TextStyle(
                                     color: Colors.white,
-                                  ),),
-                              ),
-                              Container(
-                                child: Text(u.quote,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),),
+                                  ),
+                                ),
                               ),
                               Container(
                                 child: Text(
-                                  "~ " + u.author,
+                                  todayQuote.quote,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "~ " + todayQuote.author,
                                   style: const TextStyle(
                                     color: Colors.white,
                                   ),
@@ -112,34 +137,6 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        /* Positioned(
-                            child: FittedBox(
-                             fit: BoxFit.cover,
-                             // alignment: Alignment.center,
-                              child: Text(
-                                u.quote,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
-                          ),*/
-                        /*Positioned(
-                            bottom: 10.0,
-                            right: 10.0,
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "~ " + u.author,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1!
-                                    .copyWith(color: Colors.white),
-                              ),
-                            ),
-                          )*/
                       ],
                     ),
                   ),
@@ -147,9 +144,10 @@ class _HomePageState extends State<HomePage> {
                     alignment: MainAxisAlignment.end,
                     children: <Widget>[
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          _favUnfav();
                           final snackBar = SnackBar(
-                            content: Text('Fav Quote Added!'),
+                            content: Text(favMessage),
                             action: SnackBarAction(
                               label: '',
                               onPressed: () {
@@ -158,16 +156,20 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                           AuthService().addFavoriteQuote(
-                              u.author, u.quote, u.category, u.date, u.time);
+                              todayQuote.author,
+                              todayQuote.quote,
+                              todayQuote.category,
+                              todayQuote.date,
+                              todayQuote.time);
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         },
-                        child: Icon(Icons.favorite),
+                        child: favIcon,
                       ),
                       TextButton(
                         onPressed: () {
-                          Share.share(u.quote +
+                          Share.share(todayQuote.quote +
                               '\n ~' +
-                              u.author +
+                              todayQuote.author +
                               '\n \n Get daily motivation Quotes by downloading Hope App at https://saraahmed.net');
                         },
                         child: Icon(Icons.share),
