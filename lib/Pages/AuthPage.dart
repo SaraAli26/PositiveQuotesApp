@@ -46,7 +46,7 @@ class AuthScreen extends StatelessWidget {
                       padding:
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
                       child:
-                          Image(image: AssetImage('assets/Images/mandala.png')),
+                          Image(image: AssetImage('assets/Images/transparentlogo.png')),
                     ),
                   ),
                   Flexible(
