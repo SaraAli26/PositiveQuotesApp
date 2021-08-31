@@ -61,6 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
        child: isLoading ?
        CircularProgressIndicator()
            : Container(
+         padding: EdgeInsets.fromLTRB(10, 80, 10, 0),
             width: 300,
              child: SingleChildScrollView(
                child: Column(
@@ -73,13 +74,13 @@ class _ProfilePageState extends State<ProfilePage> {
                  child: Ink.image(
                    image:  AssetImage('assets/Images/mandala.png'),
                    fit: BoxFit.cover,
-                   width: 128,
-                   height: 128,
+                   width: 200,
+                   height: 200,
                    child: InkWell(onTap: (){}),
                  ),
                ),
                 ),
-               SizedBox(height: 60.0,),
+               SizedBox(height: 30.0,),
                Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -119,7 +120,7 @@ class _ProfilePageState extends State<ProfilePage> {
                  ),
                ],
            ),
-           SizedBox(height: 100.0,),
+           SizedBox(height: 60.0,),
            Row(
                mainAxisAlignment: MainAxisAlignment.end,
                children: [
@@ -144,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
                        lastNameController.text
                      );
                      final snackBar = SnackBar(
-                       content: Text('                     Profile updated!'),
+                       content: Container(child: Text('       Profile updated!', textAlign: TextAlign.right,)),
                        action: SnackBarAction(
                          label: '',
                          onPressed: () {
