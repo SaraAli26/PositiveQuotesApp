@@ -22,15 +22,19 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         title: "Daily Positive Quotes!",
         description: "Every Once in a while, we need a little reminder to remember that eventually every thing will be Ok!",
         pathImage: "assets/Images/getquotes.png",
-        backgroundColor: Color(0xff008080),
+       // backgroundColor: Color(0xff008080),
+        colorBegin: Color(0xffffffff),
+        colorEnd: Color(0xff008080),
       ),
     );
     slides.add(
       new Slide(
         title: "Save the Quote!",
+
         description: "Add the quotes that you like into your favorite list, and read it later whenever you use the app!",
         pathImage: "assets/Images/favorite.png",
-        backgroundColor: Color(0xff008080),
+        colorBegin: Color(0xffffffff),
+        colorEnd: Color(0xff008080),
       ),
     );
     slides.add(
@@ -39,7 +43,8 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         description:
         "Share the quotes that you like with your friends in social media, just click the share button and it will be shared in the selected platform!",
         pathImage:  "assets/Images/share.png",
-        backgroundColor: Color(0xff008080),
+        colorBegin: Color(0xffffffff),
+        colorEnd: Color(0xff008080),
       ),
     );
   }
