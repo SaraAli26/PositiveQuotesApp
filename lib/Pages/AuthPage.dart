@@ -45,8 +45,9 @@ class AuthScreen extends StatelessWidget {
                       margin: EdgeInsets.only(bottom: 20.0),
                       padding:
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
-                      child:
-                          Image(image: AssetImage('assets/Images/transparentlogo.png')),
+                      child: Image(
+                          image:
+                              AssetImage('assets/Images/transparentlogo.png')),
                     ),
                   ),
                   Flexible(
@@ -60,7 +61,6 @@ class AuthScreen extends StatelessWidget {
         ],
       ),
     );
-
   }
 }
 
@@ -73,7 +73,8 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -82,7 +83,37 @@ class _AuthCardState extends State<AuthCard> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  late AnimationController _controller;
+  late Animation<Size> _heightAnimation;
+  var containerHeight = 260;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(
+        milliseconds: 300,
+      ),
+    );
+    _heightAnimation = Tween<Size>(
+            begin: Size(double.infinity, 260), end: Size(double.infinity, 500))
+        .animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
+      ),
+    );
+    _heightAnimation.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
@@ -91,9 +122,11 @@ class _AuthCardState extends State<AuthCard> {
         content: Text(message),
         actions: [
           // ignore: deprecated_member_use
-          FlatButton(onPressed: (){
-            Navigator.of(ctx).pop();
-          }, child: Text('Ok'))
+          FlatButton(
+              onPressed: () {
+                Navigator.of(ctx).pop();
+              },
+              child: Text('Ok'))
         ],
       ),
     );
@@ -143,7 +176,6 @@ class _AuthCardState extends State<AuthCard> {
     } catch (error) {
       const errorMessage = "Couldn't Authenticate you, please try again!";
       _showErrorDialog(errorMessage);
-
     }
     setState(() {
       _isLoading = false;
@@ -155,10 +187,13 @@ class _AuthCardState extends State<AuthCard> {
       setState(() {
         _authMode = AuthMode.Signup;
       });
+      //Starts the animation
+      _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.Login;
       });
+      _controller.reverse();
     }
   }
 
@@ -171,9 +206,12 @@ class _AuthCardState extends State<AuthCard> {
       ),
       elevation: 8.0,
       child: Container(
-        height: _authMode == AuthMode.Signup ? 500 : 260,
+        //height: _authMode == AuthMode.Signup ? 500 : 260,
+        height: _heightAnimation.value.height,
         constraints:
-            BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 500 : 260),
+           // BoxConstraints(minHeight: _authMode == AuthMode.Signup ? 500 : 260),
+        BoxConstraints(minHeight: _heightAnimation.value.height),
+
         width: deviceSize.width * 0.75,
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -187,10 +225,10 @@ class _AuthCardState extends State<AuthCard> {
                     decoration: InputDecoration(labelText: 'First Name'),
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Add First Name!';
-                      }
-                    }
+                            if (value!.isEmpty) {
+                              return 'Please Add First Name!';
+                            }
+                          }
                         : null,
                     onSaved: (value) {
                       _authData['firstname'] = value!;
@@ -202,10 +240,10 @@ class _AuthCardState extends State<AuthCard> {
                     decoration: InputDecoration(labelText: 'Last Name'),
                     validator: _authMode == AuthMode.Signup
                         ? (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Add Last Name!';
-                      }
-                    }
+                            if (value!.isEmpty) {
+                              return 'Please Add Last Name!';
+                            }
+                          }
                         : null,
                     onSaved: (value) {
                       _authData['lastname'] = value!;
