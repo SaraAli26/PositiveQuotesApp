@@ -1,9 +1,9 @@
-import 'dart:math';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 import 'package:qoutesapp/Models/http_exception.dart';
+
+import 'PasswordResetPage.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -85,7 +85,7 @@ class _AuthCardState extends State<AuthCard>
   final _passwordController = TextEditingController();
   late AnimationController _controller;
   late Animation<Size> _heightAnimation;
-  var containerHeight = 260;
+  var containerHeight = 290;
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _AuthCardState extends State<AuthCard>
       ),
     );
     _heightAnimation = Tween<Size>(
-            begin: Size(double.infinity, 260), end: Size(double.infinity, 500))
+            begin: Size(double.infinity, 290), end: Size(double.infinity, 520))
         .animate(
       CurvedAnimation(
         parent: _controller,
@@ -305,6 +305,15 @@ class _AuthCardState extends State<AuthCard>
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryTextTheme.button!.color,
                   ),
+                FlatButton(
+                  onPressed: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => PasswordResetPage(),),),
+                  child:
+                  Text(_authMode == AuthMode.Login ? 'Forgot Password?!' : '',),
+                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  textColor: Theme.of(context).primaryColor,
+                ),
                 FlatButton(
                   child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),

@@ -71,6 +71,7 @@ class _GratitudeJournalPageState extends State<GratitudeJournalPage> {
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
+                                Text("What are you grateful for today?", textAlign: TextAlign.center,),
                                 Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: TextFormField(

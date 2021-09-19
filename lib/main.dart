@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:qoutesapp/Pages/FavoritesPage.dart';
 import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Pages/ProfilePage.dart';
-import 'package:qoutesapp/Pages/AuthPage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
 import 'Pages/AboutPage.dart';
@@ -34,9 +33,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Firebase.initializeApp();
-
-    //QuotesService quoser = new QuotesService();
-    //quoser.getQuotesCollectionFromFireStore();
 
     return MultiProvider(
       providers: [
@@ -97,7 +93,12 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
-            SizedBox(height: 30,),
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.teal,
+              ),
+              child: Text('Hi there!'),
+            ),
             ListTile(
               title: const Text('Gratitude Journal'),
               trailing: Icon(Icons.book_rounded),
@@ -110,6 +111,12 @@ class _MyHomePageState extends State<MyHomePage> {
               trailing: Icon(Icons.vpn_key),
               onTap: () => Navigator.push(
                   context, MaterialPageRoute(builder: (context) => ChangePasswordPage())),
+            ),
+            ListTile(
+              title: const Text('Rate the app'),
+              trailing: Icon(Icons.star),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => AboutPage())),
             ),
             ListTile(
               title: const Text('About Hope'),

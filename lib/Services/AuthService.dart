@@ -133,7 +133,6 @@ class AuthService with ChangeNotifier {
   Future<void> updateProfile(firstName, lastName) async {
     final prefs = await SharedPreferences.getInstance();
     var id = prefs.getString("userId");
-
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return users.doc(id!).set({
       'firstname': firstName,
