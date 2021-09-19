@@ -12,6 +12,8 @@ import 'package:qoutesapp/Pages/AuthPage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
 
 import 'Pages/AboutPage.dart';
+import 'Pages/ChangePasswordPage.dart';
+import 'Pages/GratitudeJournalPage.dart';
 import 'Pages/IntroSliderPage.dart';
 import 'Pages/SplashPage.dart';
 
@@ -95,7 +97,20 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
-            SizedBox(height: 20,),
+            SizedBox(height: 30,),
+            ListTile(
+              title: const Text('Gratitude Journal'),
+              trailing: Icon(Icons.book_rounded),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => GratitudeJournalPage())),
+            ),
+            Divider(),
+            ListTile(
+              title: const Text('Change Password'),
+              trailing: Icon(Icons.vpn_key),
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => ChangePasswordPage())),
+            ),
             ListTile(
               title: const Text('About Hope'),
               trailing: Icon(Icons.help_outline),

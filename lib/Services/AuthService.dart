@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:qoutesapp/Models/JournalModel.dart';
 import 'package:qoutesapp/Models/QuoteModel.dart';
 import 'package:qoutesapp/Models/UserModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ class AuthService with ChangeNotifier {
   String? _token = "";
   Timer? _authTimer;
   List<QuoteModel> _Quotess = [];
+  List<JournalModel> _Journals = [];
 
   bool get isAuth {
     return token != null;
@@ -270,5 +272,47 @@ class AuthService with ChangeNotifier {
 
     return user;
   }
+
+  Future<bool> addJournal(String journal, String date) async {
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+    users.doc(id!).collection('journals').add({
+      'journal': journal,
+      'date': date,
+    })
+        .then((value) => print("Journal Added Successfully" + value.id))
+        .catchError((error) => print("Failed to add Journal: $error"));
+    return true;
+  }
+
+  Future<List<JournalModel>> getMyJournals() async {
+
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+
+    FirebaseFirestore _instance = FirebaseFirestore.instance;
+    DocumentReference userDocument = _instance.collection('users').doc(id);
+    var userJournals =  await userDocument.collection('journals').get();
+
+    userJournals.docs.forEach((journal) {
+      JournalModel cat = JournalModel.fromJson(journal.data());
+      _Journals.add(cat);
+    });
+    print(_Journals.toString());
+    return _Journals;
+  }
+
+  Future<void> deleteJournal(String journal) async {
+    final prefs = await SharedPreferences.getInstance();
+    var id = prefs.getString("userId");
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    return users.doc(id!).collection('journals').where("journal", isEqualTo: journal).get().then((snapshot){
+      snapshot.docs.first.reference.delete();
+    });
+  }
+
+
 
 }
