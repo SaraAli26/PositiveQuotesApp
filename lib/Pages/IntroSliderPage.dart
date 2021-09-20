@@ -47,6 +47,16 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         colorEnd: Color(0xff008080),
       ),
     );
+    slides.add(
+      new Slide(
+        title: "Gratitude Journal",
+        description:
+        "Counting your blessings will bring you more blessings, and will help you cultivate a positive mind set and attitude!",
+        pathImage:  "assets/Images/journal.png",
+        colorBegin: Color(0xffffffff),
+        colorEnd: Color(0xff008080),
+      ),
+    );
   }
 
   void onDonePress() {

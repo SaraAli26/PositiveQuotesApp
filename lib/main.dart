@@ -29,6 +29,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   var currentTime = DateTime.now();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -50,15 +51,18 @@ class MyApp extends StatelessWidget {
           //home: MyHomePage(title: 'Good morning Sara!',),
           home: auth.isAuth
               ? MyHomePage(
-                  title:  currentTime.hour < 12 ? "Good Morning!" : "Good Evening!",
+                  title:
+                      currentTime.hour < 12 ? "Good Morning!" : "Good Evening!",
                 )
               : FutureBuilder(
                   future: auth.tryAutoLogin(),
                   builder: (ctx, authResultSnapshot) =>
-                      authResultSnapshot.connectionState == ConnectionState.waiting
-                      ? SplashPage() :
-                      //AuthScreen(),
-                        IntroSliderPage(),
+                      authResultSnapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? SplashPage()
+                          :
+                          //AuthScreen(),
+                          IntroSliderPage(),
                 ),
         ),
       ),
@@ -93,36 +97,50 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         child: ListView(
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.teal,
+            Container(
+              height: 130,
+              child: const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.teal,
+                ),
+                child: Center(
+                    child: Text(
+                  'Make Today counts!',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.white),
+                )),
               ),
-              child: Text('Hi there!'),
             ),
             ListTile(
               title: const Text('Gratitude Journal'),
               trailing: Icon(Icons.book_rounded),
               onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => GratitudeJournalPage())),
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => GratitudeJournalPage())),
             ),
             Divider(),
             ListTile(
               title: const Text('Change Password'),
               trailing: Icon(Icons.vpn_key),
               onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => ChangePasswordPage())),
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChangePasswordPage())),
             ),
             ListTile(
               title: const Text('Rate the app'),
               trailing: Icon(Icons.star),
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AboutPage())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutPage())),
             ),
             ListTile(
               title: const Text('About Hope'),
               trailing: Icon(Icons.help_outline),
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AboutPage())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutPage())),
             ),
             ListTile(
               title: const Text('Logout'),

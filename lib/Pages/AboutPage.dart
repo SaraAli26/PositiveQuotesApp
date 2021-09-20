@@ -8,7 +8,6 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  int _currentIndex = 1;
   @override
   Widget build(BuildContext context)  {
     var currentTime = DateTime.now();

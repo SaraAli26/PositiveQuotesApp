@@ -124,16 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
            Row(
                mainAxisAlignment: MainAxisAlignment.end,
                children: [
-                /* TextButton(
-                   style: ButtonStyle(
-                     backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
-                     foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                   ),
-                   onPressed: () {
-                     Provider.of<AuthService>(context, listen: false).logout();
-                   },
-                   child: Text('Logout'),
-                 ),*/
                  TextButton(
                    style: ButtonStyle(
                      backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
