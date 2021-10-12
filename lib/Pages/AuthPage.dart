@@ -23,8 +23,8 @@ class AuthScreen extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(0, 128, 128, 1).withOpacity(0.5),
                   Color.fromRGBO(220, 220, 220, 1).withOpacity(0.9),
+                  Color.fromRGBO(0, 128, 128, 1).withOpacity(0.5),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -47,11 +47,12 @@ class AuthScreen extends StatelessWidget {
                           EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
                       child: Image(
                           image:
-                              AssetImage('assets/Images/transparentlogo.png')),
+                              AssetImage('assets/Images/transparentlogo.png',),
+                      ),
                     ),
                   ),
                   Flexible(
-                    flex: deviceSize.width > 600 ? 2 : 1,
+                    flex: deviceSize.width > 600 ? 3 : 1,
                     child: AuthCard(),
                   ),
                 ],
