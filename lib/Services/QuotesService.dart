@@ -53,17 +53,18 @@ class QuotesService {
 
     QuoteModel QuoteOfToday = new QuoteModel(author: "", quote: "", time: "", category: "", date: "");
 
-    _instance = FirebaseFirestore.instance;
-    CollectionReference quotes = _instance!.collection("positivequotes");
+     _instance = FirebaseFirestore.instance;
+     CollectionReference quotes = _instance!.collection("dailyquotes");
+     String today = DateTime.now().toString().substring(0, 10);
 
-    DocumentSnapshot snapshot = await quotes.doc('DailyQuote').get();
-    if(snapshot.exists){
-      Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-      var quotesData =  data['DailyQuotes'] as Map<String, dynamic>;
-      print(quotesData);
-      QuoteOfToday = QuoteModel.fromJson(quotesData);
-      print(QuoteOfToday.quote);
-    }
+     DocumentSnapshot snapshot = await quotes.doc(today).get();
+     if(snapshot.exists){
+       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+       var quotesData =  data;
+       print(quotesData);
+       QuoteOfToday = QuoteModel.fromJson(quotesData);
+       print(QuoteOfToday.quote);
+     }
     return QuoteOfToday;
   }
 }
