@@ -9,6 +9,7 @@ import 'package:qoutesapp/Pages/FavoritesPage.dart';
 import 'package:qoutesapp/Pages/HomePage.dart';
 import 'package:qoutesapp/Pages/ProfilePage.dart';
 import 'package:qoutesapp/Services/AuthService.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'Pages/AboutPage.dart';
 import 'Pages/ChangePasswordPage.dart';
@@ -133,8 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: const Text('Rate the app'),
               trailing: Icon(Icons.star),
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => AboutPage())),
+              onTap: () async =>  await launch("https://play.google.com/store/apps/details?id=com.saraahmed.positivebits"),
             ),
             ListTile(
               title: const Text('About Hope'),
