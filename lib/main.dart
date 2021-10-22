@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () async =>  await launch("https://play.google.com/store/apps/details?id=com.saraahmed.positivebits"),
             ),
             ListTile(
-              title: const Text('About Hope'),
+              title: const Text('About Positive Bits'),
               trailing: Icon(Icons.help_outline),
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AboutPage())),
