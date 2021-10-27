@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                           Share.share(todayQuote.quote +
                               '\n ~' +
                               todayQuote.author +
-                              '\n \n Get daily motivation Quotes by downloading Hope App at https://saraahmed.net');
+                              '\n \n Get daily motivation Quotes by downloading Positive Bits App at https://play.google.com/store/apps/details?id=com.saraahmed.positivebits');
                         },
                         child: Icon(Icons.share),
                       ),
